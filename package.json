@@ -1,0 +1,22 @@
+{
+  "name": "localhost",
+  "version": "1.0.0",
+  "description": "Food",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GovorovStepan/Advanced-JS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GovorovStepan/Advanced-JS/issues"
+  },
+  "homepage": "https://github.com/GovorovStepan/Advanced-JS#readme",
+  "devDependencies": {
+    "json-server": "^0.16.2"
+  }
+}

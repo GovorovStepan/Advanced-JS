@@ -183,6 +183,25 @@ window.addEventListener('DOMContentLoaded', () => {
             this.parent.append(element);
         }
     }
+<<<<<<< HEAD
+
+    const getRecorces = async (url) => {
+        const res = await fetch(url);
+
+        if (!res.ok){
+            throw new Error(`Could not fetch ${url}, status ${res.status}`);
+        }
+
+        return await res.json();
+    };
+
+    getRecorces('http://localhost:3000/menu')
+    .then(data => {
+        data.forEach(({img, altimg, title, descr, price}) => {
+            new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+        });
+    });
+=======
     new MenuCard(
         "img/tabs/vegy.jpg",
         "vegy",
@@ -212,6 +231,7 @@ window.addEventListener('DOMContentLoaded', () => {
         ".menu .container",
         'menu__item'
     ).render();
+>>>>>>> master
 
     //Forms
 
@@ -223,10 +243,29 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     forms.forEach(item => {
+<<<<<<< HEAD
+        bindPostData(item);
+    });
+
+    const postData = async (url, data) => {
+        const res = await fetch(url, { 
+            method: 'POST',
+            headers:{
+                'Content-type': 'application/json'
+            },
+            body: data
+        });
+
+        return await res.json();
+    };
+
+    function bindPostData(form) {
+=======
         postData(item);
     });
 
     function postData(form) {
+>>>>>>> master
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -240,6 +279,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(form);
 
+<<<<<<< HEAD
+            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+             
+            postData(' http://localhost:3000/requests', json)
+            .then(data => {
+                console.log(data);
+                showThanksModal(message.success);
+
+                statusMessage.remove();
+            }).catch(() => {
+                showThanksModal(message.failure);
+            }).finally(() => form.reset());
+=======
              const object = {};
              formData.forEach(function (value, key) {
                  object[key] = value;
@@ -260,6 +312,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }).catch(() => {
                     showThanksModal(message.failure);
                 }).finally(() => form.reset());
+>>>>>>> master
 
 
         });
