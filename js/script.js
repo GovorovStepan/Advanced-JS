@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     //timer
-    const deadline = '2020-12-10';
+    const deadline = '2020-11-10';
 
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -154,7 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
             this.price = price;
             this.parent = document.querySelector(parentSelector);
             this.classes = classes;
-            this.transfer = 27;
+            this.transfer = 78;
             this.changeToUAH();
         }
 
@@ -164,7 +164,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         render() {
             const element = document.createElement('div');
-            
+
             if (this.classes.length === 0) {
                 this.classes = "menu__item";
                 element.classList.add(this.classes);
@@ -179,7 +179,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 <div class="menu__item-divider"></div>
                 <div class="menu__item-price">
                     <div class="menu__item-cost">Цена:</div>
-                    <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
                 </div>
             `;
             this.parent.append(element);
@@ -215,4 +215,54 @@ window.addEventListener('DOMContentLoaded', () => {
         'menu__item'
     ).render();
 
+    //Forms
+    // Forms
+
+    const forms = document.querySelectorAll('form');
+    const message = {
+        loading: 'Загрузка...',
+        success: 'Спасибо! Скоро мы с вами свяжемся',
+        failure: 'Что-то пошло не так...'
+    };
+
+    forms.forEach(item => {
+        postData(item);
+    });
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            let statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.appendChild(statusMessage);
+        
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            const formData = new FormData(form);
+
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+            const json = JSON.stringify(object);
+
+            request.send(json);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    statusMessage.textContent = message.success;
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            });
+        });
+    }
 });
