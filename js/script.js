@@ -301,6 +301,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     let sliderId = document.querySelector('#current');
 
+
     function hideOtherSlides(slider, sliderId) {
         let i = 0;
         slider.forEach(slide => {
@@ -311,9 +312,9 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
         if (slider.length < 10) {
-            total.textContent = `0${slider.length}`;
+            sliderId.textContent = `0${sliderId.textContent}`;
         } else {
-            total.textContent = slider.length;
+            sliderId.textContent = sliderId.textContent;
         }
     }
 
