@@ -183,55 +183,36 @@ window.addEventListener('DOMContentLoaded', () => {
             this.parent.append(element);
         }
     }
-<<<<<<< HEAD
 
     const getRecorces = async (url) => {
         const res = await fetch(url);
 
-        if (!res.ok){
+        if (!res.ok) {
             throw new Error(`Could not fetch ${url}, status ${res.status}`);
         }
 
         return await res.json();
     };
 
-    getRecorces('http://localhost:3000/menu')
+    /*getRecorces('http://localhost:3000/menu')
     .then(data => {
         data.forEach(({img, altimg, title, descr, price}) => {
             new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
         });
-    });
-=======
-    new MenuCard(
-        "img/tabs/vegy.jpg",
-        "vegy",
-        'Меню "Фитнес"',
-        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-        9,
-        ".menu .container",
-        'menu__item',
-    ).render();
+    });*/
 
-    new MenuCard(
-        "img/tabs/post.jpg",
-        "post",
-        'Меню "Постное"',
-        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-        14,
-        ".menu .container",
-        'menu__item'
-    ).render();
-
-    new MenuCard(
-        "img/tabs/elite.jpg",
-        "elite",
-        'Меню “Премиум”',
-        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-        21,
-        ".menu .container",
-        'menu__item'
-    ).render();
->>>>>>> master
+    axios.get('http://localhost:3000/menu')
+        .then(data => {
+            data.data.forEach(({
+                img,
+                altimg,
+                title,
+                descr,
+                price
+            }) => {
+                new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+            });
+        });
 
     //Forms
 
@@ -243,14 +224,13 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     forms.forEach(item => {
-<<<<<<< HEAD
         bindPostData(item);
     });
 
     const postData = async (url, data) => {
-        const res = await fetch(url, { 
+        const res = await fetch(url, {
             method: 'POST',
-            headers:{
+            headers: {
                 'Content-type': 'application/json'
             },
             body: data
@@ -260,12 +240,6 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
     function bindPostData(form) {
-=======
-        postData(item);
-    });
-
-    function postData(form) {
->>>>>>> master
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -279,31 +253,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const formData = new FormData(form);
 
-<<<<<<< HEAD
             const json = JSON.stringify(Object.fromEntries(formData.entries()));
-             
+
             postData(' http://localhost:3000/requests', json)
-            .then(data => {
-                console.log(data);
-                showThanksModal(message.success);
-
-                statusMessage.remove();
-            }).catch(() => {
-                showThanksModal(message.failure);
-            }).finally(() => form.reset());
-=======
-             const object = {};
-             formData.forEach(function (value, key) {
-                 object[key] = value;
-             });
-             
-
-            fetch('server.php', {
-                    method: 'POST',
-                    headers:{
-                    'Content-type': 'application/json'},
-                    body: JSON.stringify(object)
-                }).then(data => data.text())
                 .then(data => {
                     console.log(data);
                     showThanksModal(message.success);
@@ -312,7 +264,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 }).catch(() => {
                     showThanksModal(message.failure);
                 }).finally(() => form.reset());
->>>>>>> master
 
 
         });
@@ -341,5 +292,46 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-});
+    //slider
 
+    const slider = document.querySelectorAll('.offer__slide');
+    next = document.querySelector('.offer__slider-next');
+    last = document.querySelector('.offer__slider-prev');
+    total = document.querySelector('#total').textContent;
+
+    let sliderId = document.querySelector('#current');
+
+    function hideOtherSlides(slider, sliderId) {
+        let i = 0;
+        slider.forEach(slide => {
+            ++i;
+            slide.classList.add('hide');
+            if (i == +sliderId.textContent) {
+                slide.classList.remove('hide');
+            }
+        });
+        if (slider.length < 10) {
+            total.textContent = `0${slider.length}`;
+        } else {
+            total.textContent = slider.length;
+        }
+    }
+
+    next.addEventListener('click', event => {
+        if (sliderId.textContent < +total) {
+            ++sliderId.textContent;
+        } else {
+            sliderId.textContent = 1;
+        }
+        hideOtherSlides(slider, sliderId);
+    });
+
+    last.addEventListener('click', event => {
+        if (sliderId.textContent > 1) {
+            --sliderId.textContent;
+        } else {
+            sliderId.textContent = 4;
+        }
+        hideOtherSlides(slider, sliderId);
+    });
+});
